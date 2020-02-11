@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:medical_app/Models/MyIcons.dart';
+import 'package:medical_app/Screens/CureDetails.dart';
 import 'package:medical_app/Services/Authentication.dart';
 import 'package:medical_app/Widgets/LocationSearch.dart';
 import 'package:medical_app/Widgets/NewyorkTimes.dart';
@@ -21,7 +22,7 @@ class _HomePageState extends State<HomePage> {
   List list = List();
   bool _loadingHeadlines = true;
   bool _first = true;
-  var _selectedIndex = 0 ;
+  var _selectedIndex = 0;
   void data() async {
     HttpClient()
         .getUrl(Uri.parse(
@@ -109,28 +110,40 @@ class _HomePageState extends State<HomePage> {
                 child: new GridView.count(
                   crossAxisCount: 3,
                   children: List.generate(9, (index) {
-                    return Container(
-                        padding: EdgeInsets.all(
-                            MediaQuery.of(context).size.width / 3 * 0.04),
-                        margin: EdgeInsets.all(
-                            MediaQuery.of(context).size.width / 3 * 0.030),
-                        child: new Container(
-                          decoration: new BoxDecoration(
-                              color: Color.fromRGBO(255, 255, 255, 0.6),
-                              borderRadius: BorderRadius.circular(10.0)),
-                          child: new Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: <Widget>[
-                              ext[index],
-                              new Text(
-                                dataext[index],
-                                style: new TextStyle(
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.w600),
-                              )
-                            ],
-                          ),
-                        ));
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => CureDetails(name: dataext[index] , bigImage: bigImageURLS[index],)));
+                      },
+                      child: Container(
+                          padding: EdgeInsets.all(
+                              MediaQuery.of(context).size.width / 3 * 0.04),
+                          margin: EdgeInsets.all(
+                              MediaQuery.of(context).size.width / 3 * 0.030),
+                          child: Hero(
+                            tag: dataext[index],
+                            child: new Container(
+                              decoration: new BoxDecoration(
+                                  color: Color.fromRGBO(255, 255, 255, 0.6),
+                                  borderRadius: BorderRadius.circular(10.0)),
+                              child: new Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: <Widget>[
+                                  ext[index],
+                                  new Text(
+                                    dataext[index],
+                                    style: new TextStyle(
+                                        fontSize: 16.0,
+                                        fontWeight: FontWeight.w600),
+                                  )
+                                ],
+                              ),
+                            ),
+                          )),
+                    );
                   }),
                 ),
               )),
@@ -147,9 +160,9 @@ class _HomePageState extends State<HomePage> {
         iconSize: 30.0,
         currentIndex: _selectedIndex,
         fixedColor: Colors.indigo,
-        onTap: (newIndex){
+        onTap: (newIndex) {
           setState(() {
-            _selectedIndex = newIndex ;
+            _selectedIndex = newIndex;
           });
         },
         items: <BottomNavigationBarItem>[

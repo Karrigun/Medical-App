@@ -61,3 +61,15 @@ List dataext = <String>[
   "Pharmacy",
   "Neurologist",
 ];
+
+List bigImageURLS = <String>[
+  'assets/images/Pediatrician.jpg',
+  'assets/images/dental.jpg',
+  'assets/images/General.jpg',
+  'assets/images/cardio.jpg',
+  'assets/images/Homeopathy.jpg',
+  'assets/images/Sexologist.jpg',
+  'assets/images/Pulmonologist.jpg',
+  'assets/images/Pharmacy.jpg',
+  'assets/images/Neurology.jpg',
+];
