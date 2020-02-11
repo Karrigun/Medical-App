@@ -62,7 +62,8 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   assets:
-    - assets/images/ 
+    - assets/images/
+    - assets/svg/
   # fonts:
   #   - family: Schyler
   #     fonts:

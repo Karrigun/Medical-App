@@ -1,11 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:medical_app/Models/MyIcons.dart';
 import 'package:medical_app/Services/Authentication.dart';
 import 'package:medical_app/Widgets/LocationSearch.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:medical_app/Widgets/NewyorkTimes.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
@@ -59,14 +61,6 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  _launchURL(url) async{
-    if(await canLaunch(url)){
-      await launch(url);
-    }else{
-      throw 'Could not launch $url';
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     // data();
@@ -74,7 +68,7 @@ class _HomePageState extends State<HomePage> {
     if (_first) {
       _fetchHeadlines();
       setState(() {
-        _first = false ;
+        _first = false;
       });
     }
     return new Scaffold(
@@ -102,99 +96,51 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           new Container(
-            height: MediaQuery.of(context).size.height * 0.25,
-            width: MediaQuery.of(context).size.width,
-            color: Colors.indigo,
-            child: _loadingHeadlines
-                ? new Center(child: new CircularProgressIndicator())
-                : new ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                     itemCount: list.length,
-                    itemBuilder: (builder, index) {
-                      return Container(
-                        margin: EdgeInsets.all(
-                            MediaQuery.of(context).size.height * 0.25 / 20),
+              height: MediaQuery.of(context).size.height * 0.25,
+              width: MediaQuery.of(context).size.width,
+              color: Colors.indigo,
+              child: _loadingHeadlines
+                  ? new Center(child: new CircularProgressIndicator())
+                  : NewyorktTimes(list: list)),
+          new Expanded(
+              flex: 5,
+              child: Container(
+                color: Colors.indigo,
+                child: new GridView.count(
+                  crossAxisCount: 3,
+                  children: List.generate(9, (index) {
+                    return Container(
                         padding: EdgeInsets.all(
-                            MediaQuery.of(context).size.width * 0.8 / 30),
-                        decoration: new BoxDecoration(
-                            color: Color.fromRGBO(255, 255, 255, 0.5),
-                            borderRadius: BorderRadius.circular(10.0)),
-                        width: MediaQuery.of(context).size.width * 0.8,
-                        height: double.infinity,
-                        child: new Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            new Container(
-                              height: MediaQuery.of(context).size.height *
-                                  0.25 *
-                                  5 /
-                                  20,
-                              child: new Text(
-                                list[index]["abstract"],
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 2,
-                                style: new TextStyle(
-                                    fontSize: 22.0,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold),
+                            MediaQuery.of(context).size.width / 3 * 0.04),
+                        margin: EdgeInsets.all(
+                            MediaQuery.of(context).size.width / 3 * 0.030),
+                        child: new Container(
+                          decoration: new BoxDecoration(
+                              color: Color.fromRGBO(255, 255, 255, 0.6),
+                              borderRadius: BorderRadius.circular(10.0)),
+                          child: new Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: <Widget>[
+                              ext[index],
+                              new Text(dataext[index],
+                              style: new TextStyle(
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.w600
                               ),
-                            ),
-                            new SizedBox(
-                              height: MediaQuery.of(context).size.height *
-                                  0.25 *
-                                  1.4 /
-                                  20,
-                            ),
-                            new Container(
-                              color: Colors.transparent,
-                              height: MediaQuery.of(context).size.height *
-                                  0.25 *
-                                  9.5 /
-                                  20,
-                              child: new Column(
-                                children: <Widget>[
-                                  new Expanded(
-                                    child: new Container(
-                                      color: Colors.transparent,
-                                      child: new Text(
-                                        list[index]["lead_paragraph"],
-                                        overflow: TextOverflow.ellipsis,
-                                        maxLines: 3,
-                                        style: new TextStyle(
-                                            color: Colors.blueGrey),
-                                      ),
-                                    ),
-                                  ),
-                                  new Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: <Widget>[
-                                      new ClipRRect(
-                                        borderRadius: BorderRadius.circular(30),
-                                        child: new RaisedButton(
-                                          onPressed: () {
-                                            _launchURL(list[index]["web_url"]);
-                                          },
-                                          color: Colors.indigoAccent,
-                                          child: new Text(
-                                            "Read More",
-                                            style: new TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.w500),
-                                          ),
-                                        ),
-                                      )
-                                    ],
-                                  )
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-          )
+                              )
+                            ],
+                          ),
+                        )
+                    );
+                  }),
+                ),
+              )),
         ],
+      ),
+      floatingActionButton: new FloatingActionButton(
+        onPressed: () {},
+        backgroundColor: Colors.red,
+        child: new Icon(FontAwesomeIcons.ambulance),
       ),
     );
   }
