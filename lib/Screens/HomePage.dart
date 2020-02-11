@@ -21,7 +21,7 @@ class _HomePageState extends State<HomePage> {
   List list = List();
   bool _loadingHeadlines = true;
   bool _first = true;
-
+  var _selectedIndex = 0 ;
   void data() async {
     HttpClient()
         .getUrl(Uri.parse(
@@ -122,16 +122,15 @@ class _HomePageState extends State<HomePage> {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: <Widget>[
                               ext[index],
-                              new Text(dataext[index],
-                              style: new TextStyle(
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.w600
-                              ),
+                              new Text(
+                                dataext[index],
+                                style: new TextStyle(
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.w600),
                               )
                             ],
                           ),
-                        )
-                    );
+                        ));
                   }),
                 ),
               )),
@@ -139,8 +138,26 @@ class _HomePageState extends State<HomePage> {
       ),
       floatingActionButton: new FloatingActionButton(
         onPressed: () {},
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.redAccent,
         child: new Icon(FontAwesomeIcons.ambulance),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: new BottomNavigationBar(
+        unselectedFontSize: 14.0,
+        iconSize: 30.0,
+        currentIndex: _selectedIndex,
+        fixedColor: Colors.indigo,
+        onTap: (newIndex){
+          setState(() {
+            _selectedIndex = newIndex ;
+          });
+        },
+        items: <BottomNavigationBarItem>[
+          new BottomNavigationBarItem(
+              icon: new Icon(Icons.home), title: new Text("Home")),
+          new BottomNavigationBarItem(
+              icon: new Icon(Icons.add_location), title: new Text("Chat Bot")),
+        ],
       ),
     );
   }
