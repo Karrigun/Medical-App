@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:medical_app/Models/MyIcons.dart';
+import 'package:medical_app/Widgets/PlacesCards.dart';
 
 class CureDetails extends StatefulWidget {
   String name;
@@ -12,8 +16,27 @@ class CureDetails extends StatefulWidget {
 }
 
 class _CureDetailsState extends State<CureDetails> {
+  List list = List() ;
+  bool _loading = true ;
+  
+  void _fetchNearestHealthCare(String keyword) async{
+    String mainURL = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=500&types=hospitals&keyword=$keyword&key=AIzaSyCPHmXKSKZrg23UlHQ-0UZ1xoppupA2sIs';
+    http.Response response = await http.get(mainURL,headers: {"Accept": "application/json"}) ;
+
+    if(response.statusCode == 200){
+      Map decode = json.decode(response.body);
+      list = decode["results"];
+      // for(var e in list){
+      //   print(e["geometryr"]);
+      // }
+    }else{
+      throw Exception("Loading Data Failed");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    _fetchNearestHealthCare(widget.name);
     return new Scaffold(
       body: new Column(
         children: <Widget>[
@@ -94,6 +117,16 @@ class _CureDetailsState extends State<CureDetails> {
                 ),
               )
             ],
+          ),
+          new Expanded(
+            child: new Container(
+              child: new ListView.builder(
+                itemCount: list.length,
+                itemBuilder: (builder,index){
+                  return PlacesCard(placeName: list[index]["name"], streetName: list[index]["vicinity"], rating: list[index]["rating"]);
+                },
+              ),
+            ) 
           )
         ],
       ),
