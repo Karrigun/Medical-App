@@ -73,3 +73,15 @@ List bigImageURLS = <String>[
   'assets/images/Pharmacy.jpg',
   'assets/images/Neurology.jpg',
 ];
+
+List keywords = <String>[
+  "",
+  "dentist",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "drug",
+  "",
+];

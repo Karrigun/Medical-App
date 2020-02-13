@@ -16,27 +16,38 @@ class CureDetails extends StatefulWidget {
 }
 
 class _CureDetailsState extends State<CureDetails> {
-  List list = List() ;
-  bool _loading = true ;
-  
-  void _fetchNearestHealthCare(String keyword) async{
-    String mainURL = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=500&types=hospitals&keyword=$keyword&key=AIzaSyCPHmXKSKZrg23UlHQ-0UZ1xoppupA2sIs';
-    http.Response response = await http.get(mainURL,headers: {"Accept": "application/json"}) ;
+  List list = List();
+  bool _loading = true;
+  bool _first = true;
 
-    if(response.statusCode == 200){
+  void _fetchNearestHealthCare(String keyword) async {
+    String mainURL =
+        'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=500&types=hospitals&keyword=$keyword&key=AIzaSyCPHmXKSKZrg23UlHQ-0UZ1xoppupA2sIs';
+    http.Response response =
+        await http.get(mainURL, headers: {"Accept": "application/json"});
+
+    if (response.statusCode == 200) {
       Map decode = json.decode(response.body);
       list = decode["results"];
-      // for(var e in list){
-      //   print(e["geometryr"]);
-      // }
-    }else{
+      for (var e in list) {
+        print(e["geometry"]);
+      }
+      setState(() {
+        _loading = false;
+      });
+    } else {
       throw Exception("Loading Data Failed");
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    _fetchNearestHealthCare(widget.name);
+    if (_first) {
+      _fetchNearestHealthCare('dentist');
+      setState(() {
+        _first = false ;
+      });
+    }
     return new Scaffold(
       body: new Column(
         children: <Widget>[
@@ -110,8 +121,9 @@ class _CureDetailsState extends State<CureDetails> {
                     new Text(
                       widget.name,
                       style: new TextStyle(
-                        letterSpacing: 1.2,
-                          fontSize: 25.0, fontWeight: FontWeight.w800),
+                          letterSpacing: 1.2,
+                          fontSize: 25.0,
+                          fontWeight: FontWeight.w800),
                     ),
                   ],
                 ),
@@ -119,15 +131,22 @@ class _CureDetailsState extends State<CureDetails> {
             ],
           ),
           new Expanded(
-            child: new Container(
-              child: new ListView.builder(
-                itemCount: list.length,
-                itemBuilder: (builder,index){
-                  return PlacesCard(placeName: list[index]["name"], streetName: list[index]["vicinity"], rating: list[index]["rating"]);
-                },
-              ),
-            ) 
-          )
+              child: new Container(
+            child: new ListView.builder(
+              itemCount: _loading ? 1 : list.length,
+              itemBuilder: (builder, index) {
+                return _loading
+                    ? Center(
+                        child: CircularProgressIndicator(
+                        semanticsLabel: "Loading",
+                      ))
+                    : PlacesCard(
+                        placeName: list[index]["name"],
+                        streetName: list[index]["vicinity"],
+                        rating: list[index]["rating"]);
+              },
+            ),
+          ))
         ],
       ),
     );
