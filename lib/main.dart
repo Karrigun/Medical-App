@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         theme: ThemeData(
-          primaryColor: Color.fromRGBO(225, 243, 255,1),
+          primaryColor: Colors.white,
           cardColor: Color.fromRGBO(203, 219, 230, 1.0),
           secondaryHeaderColor: Color.fromRGBO(195, 211, 221, 1.0)
         ),

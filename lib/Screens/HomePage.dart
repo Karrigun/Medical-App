@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:medical_app/Models/MyIcons.dart';
+import 'package:medical_app/Screens/ChatBot.dart';
 import 'package:medical_app/Screens/CureDetails.dart';
 import 'package:medical_app/Services/Authentication.dart';
 import 'package:medical_app/Widgets/LocationSearch.dart';
@@ -136,7 +137,15 @@ class _HomePageState extends State<HomePage> {
                             child: new Container(
                               decoration: new BoxDecoration(
                                   color: Colors.indigo.shade100,
-                                  borderRadius: BorderRadius.circular(10.0)),
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  boxShadow: <BoxShadow>[
+                                    new BoxShadow(
+                                      color: Colors.black,
+                                      offset: new Offset(0.0, 2.0),
+                                      blurRadius: 5.0
+                                    )
+                                  ]
+                                  ),
                               child: new Column(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
@@ -198,7 +207,8 @@ class _HomePageState extends State<HomePage> {
               ),
               new IconButton(icon: new Icon(Icons.chat),onPressed: () {
                 setState(() {
-                  _currentNav = 1 ;
+                  _currentNav = 0;
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => ChatBot()));
                 });
               },iconSize: 40.0,
               color: _currentNav == 1 ? Colors.indigoAccent : Colors.black,
