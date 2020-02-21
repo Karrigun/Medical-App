@@ -23,6 +23,7 @@ class _HomePageState extends State<HomePage> {
   bool _loadingHeadlines = true;
   bool _first = true;
   var _selectedIndex = 0;
+  var _currentNav = 0 ;
   void data() async {
     HttpClient()
         .getUrl(Uri.parse(
@@ -73,11 +74,13 @@ class _HomePageState extends State<HomePage> {
       });
     }
     return new Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
+      backgroundColor: Colors.white,
       body: new Column(
         children: <Widget>[
           new Container(
-            color: Theme.of(context).primaryColor,
+            decoration: new BoxDecoration(
+              color: Colors.white,
+            ),
             height: MediaQuery.of(context).size.height * 0.10,
             width: MediaQuery.of(context).size.width,
             child: new SafeArea(
@@ -97,16 +100,19 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           new Container(
+            color: Colors.indigo,
+            height: 2.0,
+          ),
+          new Container(
               height: MediaQuery.of(context).size.height * 0.25,
               width: MediaQuery.of(context).size.width,
-              color: Colors.indigo,
+              color: Colors.white,
               child: _loadingHeadlines
                   ? new Center(child: new CircularProgressIndicator())
                   : NewyorktTimes(list: list)),
           new Expanded(
-              flex: 5,
               child: Container(
-                color: Colors.indigo,
+                color: Colors.white,
                 child: new GridView.count(
                   crossAxisCount: 3,
                   children: List.generate(9, (index) {
@@ -115,7 +121,10 @@ class _HomePageState extends State<HomePage> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (_) => CureDetails(name: dataext[index] , bigImage: bigImageURLS[index],)));
+                                builder: (_) => CureDetails(
+                                      name: dataext[index],
+                                      bigImage: bigImageURLS[index],
+                                    )));
                       },
                       child: Container(
                           padding: EdgeInsets.all(
@@ -126,7 +135,7 @@ class _HomePageState extends State<HomePage> {
                             tag: dataext[index],
                             child: new Container(
                               decoration: new BoxDecoration(
-                                  color: Color.fromRGBO(255, 255, 255, 0.6),
+                                  color: Colors.indigo.shade100,
                                   borderRadius: BorderRadius.circular(10.0)),
                               child: new Column(
                                 mainAxisAlignment:
@@ -151,26 +160,52 @@ class _HomePageState extends State<HomePage> {
       ),
       floatingActionButton: new FloatingActionButton(
         onPressed: () {},
-        backgroundColor: Colors.redAccent,
+        backgroundColor: Colors.redAccent.shade700,
         child: new Icon(FontAwesomeIcons.ambulance),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: new BottomNavigationBar(
-        unselectedFontSize: 14.0,
-        iconSize: 30.0,
-        currentIndex: _selectedIndex,
-        fixedColor: Colors.indigo,
-        onTap: (newIndex) {
-          setState(() {
-            _selectedIndex = newIndex;
-          });
-        },
-        items: <BottomNavigationBarItem>[
-          new BottomNavigationBarItem(
-              icon: new Icon(Icons.home), title: new Text("Home")),
-          new BottomNavigationBarItem(
-              icon: new Icon(Icons.add_location), title: new Text("Chat Bot")),
-        ],
+      // bottomNavigationBar: new BottomNavigationBar(
+      //   unselectedFontSize: 14.0,
+      //   iconSize: 30.0,
+      //   currentIndex: _selectedIndex,
+      //   fixedColor: Colors.indigo,
+      //   onTap: (newIndex) {
+      //     setState(() {
+      //       _selectedIndex = newIndex;
+      //     });
+      //   },
+      //   items: <BottomNavigationBarItem>[
+      //     new BottomNavigationBarItem(
+      //         icon: new Icon(Icons.home), title: new Text("Home")),
+      //     new BottomNavigationBarItem(
+      //         icon: new Icon(Icons.add_location), title: new Text("Chat Bot")),
+      //   ],
+      // ),
+      bottomNavigationBar: new BottomAppBar(
+        shape: CircularNotchedRectangle(),
+        notchMargin: 10.0,
+        child: Container(
+          //color: Colors.indigoAccent,
+          child: new Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              new IconButton(icon: new Icon(Icons.home),onPressed: () {
+                setState(() {
+                  _currentNav = 0 ;
+                });
+              },iconSize: 40.0,
+              color: _currentNav == 0 ?Colors.indigoAccent : Colors.black,
+              ),
+              new IconButton(icon: new Icon(Icons.chat),onPressed: () {
+                setState(() {
+                  _currentNav = 1 ;
+                });
+              },iconSize: 40.0,
+              color: _currentNav == 1 ? Colors.indigoAccent : Colors.black,
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

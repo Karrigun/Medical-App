@@ -34,7 +34,7 @@ class _LocationSearchState extends State<LocationSearch> {
       children: <Widget>[
         new Icon(
           Icons.location_on,
-          color: Colors.grey,
+          color: Colors.indigo,
           size: 35.0,
         ),
         new Container(

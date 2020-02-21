@@ -28,8 +28,15 @@ class _NewyorktTimesState extends State<NewyorktTimes> {
               EdgeInsets.all(MediaQuery.of(context).size.height * 0.25 / 20),
           padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.8 / 30),
           decoration: new BoxDecoration(
-              color: Color.fromRGBO(255, 255, 255, 0.5),
-              borderRadius: BorderRadius.circular(10.0)),
+              color: Colors.indigo.shade100,
+              borderRadius: BorderRadius.circular(10.0),
+              boxShadow: <BoxShadow>[
+                new BoxShadow(
+                  color: Colors.black87,
+                  offset: new Offset(0.0, 2.0),
+                  blurRadius: 5.0
+                )
+              ]),
           width: MediaQuery.of(context).size.width * 0.8,
           height: double.infinity,
           child: new Column(
