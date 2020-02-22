@@ -31,11 +31,22 @@ class _SignUpPAgeState extends State<SignUpPAge> {
       backgroundColor: Theme.of(context).primaryColor,
       body: new SafeArea(
           child: ListView(children: [
-        new SizedBox(
-          height: MediaQuery.of(context).size.height * 0.1,
+        new AnimatedContainer(
+          duration: new Duration(seconds: 2),
+          curve: Curves.bounceInOut,
+          child: Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: new Text(
+              "We need some of your credentials ",
+              style: new TextStyle(
+                  fontSize: 35.0,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.indigo),
+            ),
+          ),
         ),
-        Container(
-          height: MediaQuery.of(context).size.height * 0.8,
+        new Container(
+          height: MediaQuery.of(context).size.height * 0.7,
           child: new Stack(
             children: <Widget>[
               new Center(
@@ -43,25 +54,14 @@ class _SignUpPAgeState extends State<SignUpPAge> {
                   width: MediaQuery.of(context).size.width * 0.9,
                   height: MediaQuery.of(context).size.height * 0.65,
                   decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: [
-                            Theme.of(context).secondaryHeaderColor,
-                            Theme.of(context).cardColor,
-                          ]),
                       borderRadius: BorderRadius.all(Radius.circular(10)),
+                      color: Colors.white,
                       boxShadow: [
-                        BoxShadow(
-                            color: Color.fromRGBO(137, 148, 155, 1.0),
-                            offset: Offset(7.0, 7.0),
-                            blurRadius: 27.0,
-                            spreadRadius: 1.0),
-                        BoxShadow(
-                            color: Color.fromRGBO(178, 192, 202, 1.0),
-                            offset: Offset(-7.0, -7.0),
-                            blurRadius: 27.0,
-                            spreadRadius: 1.0),
+                        new BoxShadow(
+                            color: Colors.indigo,
+                            offset: new Offset(0.0, -5.0)),
+                        new BoxShadow(
+                            color: Colors.indigo, offset: new Offset(0.0, 5.0)),
                       ]),
                   child: Padding(
                     padding: const EdgeInsets.all(20.0),
@@ -85,8 +85,8 @@ class _SignUpPAgeState extends State<SignUpPAge> {
                                 labelText: "Username",
                                 hintText: 'What we call you ? ',
                                 border: new OutlineInputBorder(
-                                    borderSide: new BorderSide(
-                                        color: Colors.black))),
+                                    borderSide:
+                                        new BorderSide(color: Colors.black))),
                           ),
                           new TextFormField(
                             validator: (value) =>
@@ -105,8 +105,8 @@ class _SignUpPAgeState extends State<SignUpPAge> {
                                 labelText: "Email",
                                 hintText: 'example@gmail.com',
                                 border: new OutlineInputBorder(
-                                    borderSide: new BorderSide(
-                                        color: Colors.black))),
+                                    borderSide:
+                                        new BorderSide(color: Colors.black))),
                           ),
                           new TextFormField(
                             validator: (value) => value.length < 10
@@ -125,8 +125,8 @@ class _SignUpPAgeState extends State<SignUpPAge> {
                                 labelText: "Phone Number",
                                 hintText: '+91 XXXX XXXX XX',
                                 border: new OutlineInputBorder(
-                                    borderSide: new BorderSide(
-                                        color: Colors.black))),
+                                    borderSide:
+                                        new BorderSide(color: Colors.black))),
                           ),
                           new TextFormField(
                             validator: (value) => value.length < 6
@@ -146,12 +146,12 @@ class _SignUpPAgeState extends State<SignUpPAge> {
                                 labelText: "Password",
                                 hintText: 'First see there is no one around .',
                                 border: new OutlineInputBorder(
-                                    borderSide: new BorderSide(
-                                        color: Colors.black))),
+                                    borderSide:
+                                        new BorderSide(color: Colors.black))),
                           ),
                           new Container(
                             height: 70.0,
-                            width: MediaQuery.of(context).size.width ,
+                            width: MediaQuery.of(context).size.width,
                             child: new RaisedButton(
                               color: Colors.blue,
                               onPressed: () async {
@@ -193,23 +193,18 @@ class _SignUpPAgeState extends State<SignUpPAge> {
                   ),
                 ),
               ),
-              new Positioned(
-                  top: 0,
-                  left: MediaQuery.of(context).size.width / 2 - 50,
-                  child: Container(
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(50),
-                      child: new Image(
-                        image: AssetImage('assets/images/bed_patient.png'),
-                        fit: BoxFit.contain,
-                        width: 100,
-                        height: 100,
-                      ),
-                    ),
-                  )),
             ],
           ),
         ),
+        new Center(
+          child: new Text(
+            "Hosted on Github with ❤ by Abhishek",
+            style: new TextStyle(
+                color: Colors.blueGrey,
+                fontSize: 14.0,
+                fontWeight: FontWeight.w400),
+          ),
+        )
       ])),
     );
   }

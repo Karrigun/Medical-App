@@ -12,9 +12,8 @@ class LogInPage extends StatefulWidget {
 }
 
 class _LogInPageState extends State<LogInPage> {
+  Authentication _authentication = new Authentication();
 
-  Authentication _authentication = new Authentication() ;
-  
   final _formKey = GlobalKey<FormState>();
   String email = "";
   String password = "";
@@ -25,16 +24,29 @@ class _LogInPageState extends State<LogInPage> {
     return Scaffold(
       appBar: new AppBar(
         automaticallyImplyLeading: false,
-        centerTitle: true,
         backgroundColor: Theme.of(context).primaryColor,
         elevation: 0.0,
-        title: new Text("Log In" , style: new TextStyle(fontSize: 30.0 , fontWeight: FontWeight.bold),),
+        title: new Text(
+          "Log In",
+          style: new TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold),
+        ),
       ),
       backgroundColor: Theme.of(context).primaryColor,
       body: new SafeArea(
           child: ListView(children: [
-        new SizedBox(
-          height: MediaQuery.of(context).size.height * 0.1,
+        new AnimatedContainer(
+          duration: new Duration(seconds : 2),
+          curve: Curves.bounceInOut,
+          child: Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: new Text(
+              "Welcome back ! ",
+              style: new TextStyle(
+                  fontSize: 35.0,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.indigo),
+            ),
+          ),
         ),
         Container(
           height: MediaQuery.of(context).size.height * 0.7,
@@ -45,25 +57,15 @@ class _LogInPageState extends State<LogInPage> {
                   width: MediaQuery.of(context).size.width * 0.9,
                   height: MediaQuery.of(context).size.height * 0.55,
                   decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: [
-                            Theme.of(context).secondaryHeaderColor,
-                            Theme.of(context).cardColor,
-                          ]),
+                      color: Colors.white,
                       borderRadius: BorderRadius.all(Radius.circular(10)),
                       boxShadow: [
-                        BoxShadow(
-                            color: Color.fromRGBO(137, 148, 155, 1.0),
-                            offset: Offset(7.0, 7.0),
-                            blurRadius: 27.0,
-                            spreadRadius: 1.0),
-                        BoxShadow(
-                            color: Color.fromRGBO(178, 192, 202, 1.0),
-                            offset: Offset(-7.0, -7.0),
-                            blurRadius: 27.0,
-                            spreadRadius: 1.0),
+                        new BoxShadow(
+                          color: Colors.indigo,
+                          offset: new Offset(0.0, -5.0)
+                        ),
+                        new BoxShadow(
+                            color: Colors.indigo, offset: new Offset(0.0, 5.0))
                       ]),
                   child: Padding(
                     padding: const EdgeInsets.all(20.0),
@@ -112,46 +114,43 @@ class _LogInPageState extends State<LogInPage> {
                                     borderSide:
                                         new BorderSide(color: Colors.black))),
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              new Container(
-                                width: MediaQuery.of(context).size.width * 0.8,
-                                height: 60.0,
-                                child: new RaisedButton(
-                                  color: Colors.blue,
-                                  onPressed: () async {
-                                    dynamic result = await _authentication
-                                        .signInWithEmailAndPassword(
-                                            email, password);
-                                    if (result == null) {
-                                      setState(() {
-                                        if (error == '')
-                                          error = "No matching credentials found";
-                                        else
-                                          error = '';
-                                      });
-                                    } else {
-                                      // It get directly reach to the HomePage() as we have set a Stream at the Wrapper Class .
-                                    }
-                                  },
-                                  child: new Text(
-                                    "Log in",
-                                    style: new TextStyle(
-                                      fontSize: 18.0,
-                                      color: Colors.white,
-                                    ),
-                                  ),
+                          new Container(
+                            width: MediaQuery.of(context).size.width * 0.8,
+                            height: 60.0,
+                            child: new RaisedButton(
+                              color: Colors.blue,
+                              onPressed: () async {
+                                if (_formKey.currentState.validate()) {
+                                  dynamic result = await _authentication
+                                      .signInWithEmailAndPassword(
+                                          email, password);
+                                  if (result == null) {
+                                    setState(() {
+                                      if (error == '')
+                                        error = "No matching credentials found";
+                                      else
+                                        error = '';
+                                    });
+                                  } else {
+                                    // It get directly reach to the HomePage() as we have set a Stream at the Wrapper Class .
+                                  }
+                                }
+                              },
+                              child: new Text(
+                                "Log in",
+                                style: new TextStyle(
+                                  fontSize: 18.0,
+                                  color: Colors.white,
                                 ),
                               ),
-                              new Text(
-                                error,
-                                style: new TextStyle(
-                                  fontSize: 14.0,
-                                  color: Colors.red.shade700,
-                                ),
-                              )
-                            ],
+                            ),
+                          ),
+                          new Text(
+                            error,
+                            style: new TextStyle(
+                              fontSize: 14.0,
+                              color: Colors.red.shade700,
+                            ),
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -180,22 +179,18 @@ class _LogInPageState extends State<LogInPage> {
                   ),
                 ),
               ),
-              new Positioned(
-                  top: 15,
-                  left: MediaQuery.of(context).size.width / 2 - 50,
-                  child: Container(
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(50),
-                      child: new Image(
-                        image: AssetImage('assets/images/patient.png'),
-                        width: 100,
-                        height: 100,
-                      ),
-                    ),
-                  )),
             ],
           ),
         ),
+        new Center(
+          child: new Text(
+            "Hosted on Github with ❤ by Abhishek",
+            style: new TextStyle(
+                color: Colors.blueGrey,
+                fontSize: 14.0,
+                fontWeight: FontWeight.w400),
+          ),
+        )
       ])),
     );
   }

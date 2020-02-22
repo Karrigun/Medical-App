@@ -6,6 +6,14 @@ class ChatBot extends StatefulWidget {
 }
 
 class _ChatBotState extends State<ChatBot> with TickerProviderStateMixin {
+  final TextEditingController _controller = new TextEditingController();
+  String msg = '';
+
+  void _handleSubmition(String value) {
+    _controller.clear();
+    print(value);
+  }
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -25,10 +33,11 @@ class _ChatBotState extends State<ChatBot> with TickerProviderStateMixin {
                 new Flexible(
                   child: Container(
                     decoration: new BoxDecoration(
-                      color: Colors.orange.shade400,
-                      borderRadius: BorderRadius.circular(10.0)
-                    ),
-                    child: new TextFormField(
+                        color: Colors.orange.shade400,
+                        borderRadius: BorderRadius.circular(10.0)),
+                    child: new TextField(
+                      controller: _controller,
+                      onSubmitted: _handleSubmition,
                       decoration: new InputDecoration(
                           hintText: "Your Message",
                           border: InputBorder.none,
@@ -41,12 +50,19 @@ class _ChatBotState extends State<ChatBot> with TickerProviderStateMixin {
                     ),
                   ),
                 ),
-                new SizedBox(width: 20.0,),
+                new SizedBox(
+                  width: 10.0,
+                ),
                 new ClipRRect(
                   borderRadius: new BorderRadius.circular(20.0),
                   child: new Container(
                     color: Colors.deepOrange,
-                    child: IconButton(color: Colors.black,onPressed: (){}, icon: new Icon(Icons.send),iconSize: 25.0,),
+                    child: IconButton(
+                      color: Colors.black,
+                      onPressed: () => _handleSubmition(_controller.text),
+                      icon: new Icon(Icons.send),
+                      iconSize: 25.0,
+                    ),
                   ),
                 )
               ],
